@@ -2,7 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
 
   tags = merge({
-    Name = "eks-vpc"
+    Name = "eks-vpc-${var.environment}"
   }, var.tags
   )
 }
@@ -18,7 +18,7 @@ resource "aws_subnet" "public" {
 
   tags = merge (
     {
-    Name = "eks-public-${count.index}"
+    Name = "eks-public-${var.environment}-${count.index}"
     },
      var.tags
   )
@@ -48,7 +48,7 @@ resource "aws_route_table" "public_rt" {
 
   tags = merge (
     {
-      Name = "eks-public-rt"
+      Name = "eks-public-rt-${var.environment}"
     },
     var.tags
   )
@@ -71,7 +71,7 @@ resource "aws_subnet" "private" {
 
   tags = merge (
     {
-      Name = "eks-private-${count.index}"
+      Name = "eks-private-${var.environment}-${count.index}"
     },
     var.tags
   )
