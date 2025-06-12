@@ -1,7 +1,7 @@
 module "vpc" {
-  source     = "./modules/vpc"
-  cidr_block = var.vpc_cidr
-  region     = var.aws_region
+  source      = "./modules/vpc"
+  cidr_block  = var.vpc_cidr
+  region      = var.aws_region
   environment = var.environment
   tags = {
     Environment = var.environment
@@ -47,10 +47,10 @@ module "nodegroup_public" {
   subnet_ids     = concat(module.vpc.private_subnets, module.vpc.public_subnets)
   region         = var.aws_region
   instance_types = var.instance_types
-  desired_size = 1
-  max_size     = 1
-  min_size     = 1
-  environment  = var.environment
+  desired_size   = 1
+  max_size       = 1
+  min_size       = 1
+  environment    = var.environment
   tags = {
     Environment = var.environment
     ClusterName = var.cluster_name
