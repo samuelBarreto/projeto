@@ -7,7 +7,7 @@
 - Route Tables para públicas e privadas
 
 ## EKS Cluster
-- Criado nas subnets privadas
+- Criado nas subnets privadas e pública
 
 ### Node Groups
 - **nodegroup_private:**  
