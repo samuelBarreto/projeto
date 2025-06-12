@@ -27,7 +27,7 @@ module "eks" {
 module "nodegroup_private" {
   source         = "./modules/nodegroup_private"
   cluster_name   = module.eks.cluster_name
-  subnet_ids     = concat(module.vpc.private_subnets, module.vpc.public_subnets)
+  subnet_ids     = module.vpc.private_subnets
   region         = var.aws_region
   instance_types = var.instance_types
   environment    = var.environment
@@ -44,10 +44,9 @@ module "nodegroup_private" {
 module "nodegroup_public" {
   source         = "./modules/nodegroup_public"
   cluster_name   = module.eks.cluster_name
-  subnet_ids     = [module.vpc.public_subnets[0]] # Apenas uma subnet pública
+  subnet_ids     = concat(module.vpc.private_subnets, module.vpc.public_subnets)
   region         = var.aws_region
   instance_types = var.instance_types
-  # Você pode definir um tipo de instância diferente se quiser
   desired_size = 1
   max_size     = 1
   min_size     = 1
