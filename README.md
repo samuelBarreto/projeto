@@ -17,7 +17,7 @@
     
 ### Add-on CNI (Amazon VPC CNI):
 
-  - Instalação automática do add-on vpc-cni para gerenciamento de rede dos pods no EKS.
+  - Instalação automática do add-on vpc-cni, akube-proxy, addon-coredns para gerenciamento de rede dos pods no EKS.
     
 ### Node Groups (Grupos de Nós):
 
@@ -84,6 +84,7 @@
 
 - **modules/vpc:** Cria VPC, subnets públicas/privadas, rotas, IGW
 - **modules/eks:** Cria o cluster EKS nas subnets privadas
+- **modules/add-on:** Cria o cluster EKS 
 - **modules/nodegroup_private:** Node group privado (2 nodes min, 3 max)
 - **modules/nodegroup_public:** Node group público (1 node)
 
@@ -120,7 +121,11 @@ eks-terraform/
 │   │   ├── main.tf
 │   │   ├── variables.tf
 │   │   ├── outputs.tf
-│   └── nodegroup_public/
+│   ├── nodegroup_public/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   └── add-on/
 │       ├── main.tf
 │       ├── variables.tf
 │       ├── outputs.tf
@@ -169,3 +174,13 @@ eks-terraform/
 | aws_eks_node_group  | Cria os nós gerenciados (workers) com autoscaling  |
 | aws_iam_role        | Permite ao EC2 se conectar ao EKS como worker      |
 | instance_types      | Define o tipo de instância EC2 para os workers     |
+
+### Módulo `add-on` 
+
+| Recurso             | Função                                                        |
+|---------------------|---------------------------------------------------------------|
+| aws_eks_addon       | Instala e gerencia add-ons oficiais do EKS (ex: vpc-cni, coredns, kube-proxy) |
+| cluster_name        | Nome do cluster EKS onde o add-on será instalado              |
+| addon_name          | Nome do add-on a ser instalado (ex: vpc-cni, kube-proxy)      |
+| addon_version       | Versão do add-on (opcional, usa a recomendada se null)        |
+| tags                | Tags aplicadas ao recurso do add-on                           |

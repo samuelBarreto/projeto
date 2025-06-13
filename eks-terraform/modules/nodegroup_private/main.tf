@@ -24,6 +24,16 @@ resource "aws_iam_role_policy_attachment" "eks_node_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
 }
 
+resource "aws_iam_role_policy_attachment" "eks_node_ecr_attach" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_cni_attach" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
 resource "aws_eks_node_group" "this" {
   cluster_name    = var.cluster_name
   node_group_name = "${var.cluster_name}-private-ng"
@@ -37,7 +47,11 @@ resource "aws_eks_node_group" "this" {
   }
 
   instance_types = var.instance_types
-  depends_on     = [aws_iam_role_policy_attachment.eks_node_attach]
+  depends_on     = [
+    aws_iam_role_policy_attachment.eks_node_attach,
+    aws_iam_role_policy_attachment.eks_node_ecr_attach,
+    aws_iam_role_policy_attachment.eks_node_cni_attach
+  ]
 
    tags = merge(var.tags, {
     "kubernetes.io/cluster/${var.cluster_name}" = "owned",

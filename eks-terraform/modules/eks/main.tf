@@ -29,7 +29,6 @@ resource "aws_eks_cluster" "this" {
   role_arn = aws_iam_role.eks_cluster_role.arn
 
   version = var.eks_version  # Optional: specify EKS version, e.g., "1.21"
-  
 
   vpc_config {
     subnet_ids = var.subnet_ids
