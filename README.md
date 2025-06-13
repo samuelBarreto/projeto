@@ -1,8 +1,43 @@
 # Resumo da Arquitetura
 
+## Descrição dos Recursos Criados
+
+### VPC (Virtual Private Cloud):
+
+  -  Uma VPC dedicada para isolar a rede do cluster EKS.
+     Subnets públicas e privadas distribuídas em múltiplas zonas de disponibilidade.
+     Internet Gateway para permitir acesso à internet nas subnets públicas.
+     Route Tables e associações para roteamento adequado entre subnets e internet.
+
+### Cluster EKS:
+
+  -  Criação do cluster Amazon EKS, especificando nome, versão do Kubernetes, subnets e VPC.
+     IAM Role para o cluster com a política AmazonEKSClusterPolicy.
+     Tags para identificação e organização dos recursos.
+    
+### Add-on CNI (Amazon VPC CNI):
+
+  - Instalação automática do add-on vpc-cni para gerenciamento de rede dos pods no EKS.
+    
+### Node Groups (Grupos de Nós):
+
+  - Dois grupos de nós gerenciados (Managed Node Groups):
+      Privado: Nodes em subnets privadas.
+      Público: Nodes em subnets públicas.
+  - IAM Role para os nodes, com as políticas:
+      AmazonEKSWorkerNodePolicy
+      AmazonEC2ContainerRegistryReadOnly
+      AmazonEKS_CNI_Policy
+    Configuração de escalonamento (min, max, desired) e tipos de instância.
+    Tags para identificação dos nodes e integração com o cluster.
+
+### Outputs:
+
+  - IDs da VPC, subnets privadas, nome do cluster, nomes dos nodegroups privados e públicos.
+
 ## VPC
-- 3 subnets públicas
-- 3 subnets privadas
+- 1 subnets públicas
+- 2 subnets privadas
 - Internet Gateway
 - Route Tables para públicas e privadas
 
